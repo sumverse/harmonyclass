@@ -1,6 +1,6 @@
 // app/api/create-checkout-session/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripeServer } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const { email, userId } = await req.json();
 
     // Stripe Checkout 세션 생성
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripeServer().checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
       customer_email: email,

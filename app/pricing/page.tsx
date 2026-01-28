@@ -50,12 +50,15 @@ export default function PricingPage() {
       }
 
       // 3. Stripe Checkout으로 리다이렉트
-      const stripe = await import('@stripe/stripe-js').then(mod => 
-        mod.loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-      );
+      const { loadStripe } = await import('@stripe/stripe-js');
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
       
       if (stripe) {
-        await stripe.redirectToCheckout({ sessionId });
+        const { error: stripeError } = await stripe.redirectToCheckout({ sessionId });
+        if (stripeError) {
+          console.error('Stripe 리다이렉트 오류:', stripeError);
+          alert('결제 페이지로 이동 중 오류가 발생했습니다.');
+        }
       }
     } catch (error: any) {
       console.error('결제 오류:', error);

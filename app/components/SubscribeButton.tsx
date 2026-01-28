@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import { getStripe } from '@/lib/stripe';
 import { useRouter } from 'next/navigation';
 
 interface SubscribeButtonProps {
@@ -36,14 +35,15 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
       }
 
       // 2. Stripe Checkout으로 이동
-      const stripe = await getStripe();
-      const { error: stripeError } = await stripe!.redirectToCheckout({
-        sessionId,
-      });
-
-      if (stripeError) {
-        alert('결제 페이지 이동 실패: ' + stripeError.message);
-        setLoading(false);
+      const { loadStripe } = await import('@stripe/stripe-js');
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      
+      if (stripe) {
+        const { error: stripeError } = await stripe.redirectToCheckout({ sessionId });
+        if (stripeError) {
+          alert('결제 페이지 이동 실패: ' + stripeError.message);
+          setLoading(false);
+        }
       }
     } catch (err) {
       console.error('구독 오류:', err);

@@ -38,13 +38,19 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
       const { loadStripe } = await import('@stripe/stripe-js');
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
       
-      if (stripe) {
-        const result = await stripe.redirectToCheckout({ sessionId });
+      if (!stripe) {
+        alert('Stripe 로딩 실패');
+        setLoading(false);
+        return;
+      }
+
+      // redirectToCheckout 호출
+      stripe.redirectToCheckout({ sessionId }).then((result) => {
         if (result.error) {
           alert('결제 페이지 이동 실패: ' + result.error.message);
           setLoading(false);
         }
-      }
+      });
     } catch (err) {
       console.error('구독 오류:', err);
       alert('구독 처리 중 오류가 발생했습니다.');

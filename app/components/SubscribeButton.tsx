@@ -44,9 +44,9 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
         return;
       }
 
-      // redirectToCheckout 호출
-      stripe.redirectToCheckout({ sessionId }).then((result) => {
-        if (result.error) {
+      // redirectToCheckout 호출 (타입 단언 사용)
+      (stripe as any).redirectToCheckout({ sessionId }).then((result: any) => {
+        if (result && result.error) {
           alert('결제 페이지 이동 실패: ' + result.error.message);
           setLoading(false);
         }

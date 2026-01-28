@@ -26,7 +26,7 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
         body: JSON.stringify({ email, userId }),
       });
 
-      const { sessionId, error } = await response.json();
+      const { sessionId, url, error } = await response.json();
 
       if (error) {
         alert('결제 세션 생성 실패: ' + error);
@@ -34,23 +34,13 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
         return;
       }
 
-      // 2. Stripe Checkout으로 이동
-      const { loadStripe } = await import('@stripe/stripe-js');
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-      
-      if (!stripe) {
-        alert('Stripe 로딩 실패');
+      // 2. Stripe Checkout으로 이동 (session.url 사용 — redirectToCheckout는 더 이상 사용 불가)
+      if (!url) {
+        alert('결제 URL을 받지 못했습니다.');
         setLoading(false);
         return;
       }
-
-      // redirectToCheckout 호출 (타입 단언 사용)
-      (stripe as any).redirectToCheckout({ sessionId }).then((result: any) => {
-        if (result && result.error) {
-          alert('결제 페이지 이동 실패: ' + result.error.message);
-          setLoading(false);
-        }
-      });
+      window.location.href = url;
     } catch (err) {
       console.error('구독 오류:', err);
       alert('구독 처리 중 오류가 발생했습니다.');

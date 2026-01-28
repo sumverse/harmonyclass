@@ -42,24 +42,19 @@ export default function PricingPage() {
         }),
       });
 
-      const { sessionId, error } = await response.json();
+      const { sessionId, url, error } = await response.json();
 
       if (error) {
         alert('오류가 발생했습니다: ' + error);
         return;
       }
 
-      // 3. Stripe Checkout으로 리다이렉트
-      const { loadStripe } = await import('@stripe/stripe-js');
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-      
-      if (stripe) {
-        const { error: stripeError } = await stripe.redirectToCheckout({ sessionId });
-        if (stripeError) {
-          console.error('Stripe 리다이렉트 오류:', stripeError);
-          alert('결제 페이지로 이동 중 오류가 발생했습니다.');
-        }
+      // 3. Stripe Checkout으로 리다이렉트 (session.url 사용 — redirectToCheckout는 더 이상 사용 불가)
+      if (!url) {
+        alert('결제 URL을 받지 못했습니다.');
+        return;
       }
+      window.location.href = url;
     } catch (error: any) {
       console.error('결제 오류:', error);
       alert('결제 처리 중 오류가 발생했습니다.');

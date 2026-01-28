@@ -32,12 +32,13 @@ export async function POST(req: NextRequest) {
   // 결제 성공 시 처리
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
+    const userId = session.metadata?.userId;
     const email = session.metadata?.email;
 
-    if (email) {
-      console.log('✅ 결제 성공! 프리미엄 전환:', email);
+    if (userId) {
+      console.log('✅ 결제 성공! 프리미엄 전환:', userId, email);
 
-      // 🎯 자동으로 프리미엄 전환!
+      // 🎯 profiles는 Supabase 기본처럼 id(auth.users.id) 기준. userId로 업데이트
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -48,13 +49,15 @@ export async function POST(req: NextRequest) {
           stripe_customer_id: session.customer as string,
           stripe_subscription_id: session.subscription as string,
         })
-        .eq('email', email);
+        .eq('id', userId);
 
       if (error) {
         console.error('DB 업데이트 오류:', error);
       } else {
         console.log('✨ 프리미엄 전환 완료!');
       }
+    } else {
+      console.warn('checkout.session.completed: metadata.userId 없음', { email });
     }
   }
 

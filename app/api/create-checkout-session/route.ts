@@ -41,7 +41,10 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
     });
 
-    return NextResponse.json({ sessionId: session.id });
+    return NextResponse.json({
+      sessionId: session.id,
+      url: session.url ?? null,
+    });
   } catch (error: any) {
     console.error('Stripe 세션 생성 오류:', error);
     return NextResponse.json(

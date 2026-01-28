@@ -52,7 +52,7 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
     <button
       onClick={handleSubscribe}
       disabled={loading}
-      className="bg-gradient-to-r from-amber-700 to-amber-900 text-white px-8 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      className="bg-[#2C3E50] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#1A252F] transition disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {loading ? '처리 중...' : '프리미엄 구독하기'}
     </button>

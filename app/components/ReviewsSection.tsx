@@ -9,55 +9,55 @@ export default function ReviewsSection() {
     {
       id: 1,
       text: "매주 최신 교육 트렌드를 반영한 수업이 제공돼서 뒤처지지 않아요",
-      author: "김민지 선생님",
+      author: "김*지 선생님",
       school: "중학교"
     },
     {
       id: 2,
       text: "에듀테크 활용 수업이 다양해서 학생들 반응이 정말 좋아요!",
-      author: "박준호 선생님",
+      author: "박*호 선생님",
       school: "고등학교"
     },
     {
       id: 3,
       text: "수업 목표가 명확하고 학생 반응별 대응 예시까지 있어서 실전에 강해요",
-      author: "이서연 선생님",
+      author: "이*연 선생님",
       school: "중학교"
     },
     {
       id: 4,
       text: "루브릭이 너무 꼼꼼해서 그대로 출력해서 바로 사용하고 있어요",
-      author: "최영수 선생님",
+      author: "최*수 선생님",
       school: "중학교"
     },
     {
       id: 5,
       text: "다양한 학교급, 주제의 수업이 있어서 선택의 폭이 넓어요",
-      author: "정하은 선생님",
+      author: "정*은 선생님",
       school: "고등학교"
     },
     {
       id: 6,
       text: "수업 흐름이 체계적이고 준비물, 유의사항까지 다 나와있어요",
-      author: "강민석 선생님",
+      author: "강*석 선생님",
       school: "중학교"
     },
     {
       id: 7,
       text: "AI, 메타버스 등 최신 에듀테크를 수업에 자연스럽게 녹여낼 수 있어요",
-      author: "윤지아 선생님",
+      author: "윤*아 선생님",
       school: "고등학교"
     },
     {
       id: 8,
       text: "학생 수준별 활동 예시가 있어서 차별화 수업이 가능해요",
-      author: "한도윤 선생님",
+      author: "한*윤 선생님",
       school: "중학교"
     },
     {
       id: 9,
       text: "매주 기다려지는 뉴스레터! 동료 선생님들께 강력 추천합니다",
-      author: "송지우 선생님",
+      author: "송*우 선생님",
       school: "고등학교"
     }
   ];
@@ -127,7 +127,7 @@ export default function ReviewsSection() {
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`h-2 rounded-full transition-all ${
-                  index === currentIndex % reviews.length ? 'bg-amber-800 w-8' : 'bg-gray-300 w-2'
+                  index === currentIndex % reviews.length ? 'bg-[#2C3E50] w-8' : 'bg-gray-300 w-2'
                 }`}
                 aria-label={`슬라이드 ${index + 1}`}
               />

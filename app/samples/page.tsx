@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Navbar from '../components/Navbar';
 
 export default function SamplesPage() {
   const [schoolLevel, setSchoolLevel] = useState('middle');
@@ -219,21 +220,12 @@ export default function SamplesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="block">
-            <Image src="/2.png" alt="harmonyclass" width={260} height={88} className="h-24 w-auto object-contain" />
-          </Link>
-          <Link href="/" className="text-gray-600 hover:text-gray-900">
-            ← 홈으로
-          </Link>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Navbar alwaysWhite />
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-12">
-        <h1 className="font-title text-4xl font-bold text-gray-900 mb-4">Contents</h1>
+      <main className="max-w-6xl mx-auto px-4 pt-40 pb-16">
+        <h1 className="font-title text-4xl font-bold text-gray-900 mb-4">자료실</h1>
         <p className="font-title text-gray-600 mb-8">harmonyclass가 제공하는 모든 수업자료</p>
 
         {/* Filters */}
@@ -246,7 +238,7 @@ export default function SamplesPage() {
                   onClick={() => setSchoolLevel('elementary')}
                   className={`px-4 py-2 rounded-lg font-medium transition ${
                     schoolLevel === 'elementary'
-                      ? 'bg-amber-800 text-white'
+                      ? 'bg-[#2C3E50] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -256,7 +248,7 @@ export default function SamplesPage() {
                   onClick={() => setSchoolLevel('middle')}
                   className={`px-4 py-2 rounded-lg font-medium transition ${
                     schoolLevel === 'middle'
-                      ? 'bg-amber-800 text-white'
+                      ? 'bg-[#2C3E50] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -266,7 +258,7 @@ export default function SamplesPage() {
                   onClick={() => setSchoolLevel('high')}
                   className={`px-4 py-2 rounded-lg font-medium transition ${
                     schoolLevel === 'high'
-                      ? 'bg-amber-800 text-white'
+                      ? 'bg-[#2C3E50] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -280,7 +272,7 @@ export default function SamplesPage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:outline-none"
+                className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#2C3E50] focus:outline-none"
               >
                 <option value="all">전체</option>
                 <option value="가창/합창">가창/합창</option>
@@ -303,7 +295,7 @@ export default function SamplesPage() {
             >
               <div className="flex items-center gap-2 mb-3">
                 {sample.categories.map((cat, idx) => (
-                  <span key={idx} className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                  <span key={idx} className="text-xs bg-slate-100 text-[#2C3E50] px-2 py-1 rounded-full">
                     {cat}
                   </span>
                 ))}
@@ -325,6 +317,28 @@ export default function SamplesPage() {
         )}
       </main>
 
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4 rounded-t-[200px] mt-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="mb-6">
+            <div className="mb-4 flex justify-center">
+              <Image src="/2.png" alt="harmonyclass" width={320} height={112} className="h-28 w-auto object-contain" />
+            </div>
+            <p className="text-gray-400">음악 교사를 위한 수업 아이디어 뉴스레터</p>
+          </div>
+          
+          <div className="mb-6 text-sm text-gray-400">
+            <p>contact@harmonyclass.com</p>
+            <p className="mt-1">카카오톡: @harmonyclass</p>
+          </div>
+          
+          <div className="border-t border-gray-800 pt-6 text-sm text-gray-500">
+            <p>© 2026 harmonyclass. All rights reserved.</p>
+            <p className="mt-2">Made with love for Music Teachers</p>
+          </div>
+        </div>
+      </footer>
+
       {/* Modal */}
       {selectedSample && (
         <div
@@ -339,7 +353,7 @@ export default function SamplesPage() {
               <div>
                 <div className="flex gap-2 mb-3">
                   {selectedSample.categories.map((cat: string, idx: number) => (
-                    <span key={idx} className="text-sm bg-amber-100 text-amber-800 px-3 py-1 rounded-full">
+                    <span key={idx} className="text-sm bg-slate-100 text-[#2C3E50] px-3 py-1 rounded-full">
                       {cat}
                     </span>
                   ))}
@@ -368,7 +382,7 @@ export default function SamplesPage() {
                 </p>
                 <Link
                   href="/pricing"
-                  className="inline-block bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition"
+                  className="inline-block bg-[#2C3E50] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1A252F] transition"
                 >
                   프리미엄 시작하기
                 </Link>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
+import Navbar from '../components/Navbar';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -84,26 +85,17 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="block">
-            <Image src="/2.png" alt="harmonyclass" width={260} height={88} className="h-24 w-auto object-contain" />
-          </Link>
-          <Link href="/" className="text-gray-600 hover:text-gray-900">
-            ← 홈으로
-          </Link>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Navbar alwaysWhite />
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-16">
+      <main className="max-w-6xl mx-auto px-4 pt-40 pb-16">
         <div className="text-center mb-12">
           <h1 className="font-title text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             요금제 선택
           </h1>
           <p className="font-title text-gray-600 text-lg">
-            7일 무료 체험 후 자동 결제
+            언제든 해지 가능
           </p>
         </div>
 
@@ -167,7 +159,7 @@ export default function PricingPage() {
 
           {/* 프리미엄 플랜 */}
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl shadow-xl border-2 border-amber-300 relative">
-            <div className="absolute -top-4 right-8 bg-amber-800 text-white px-6 py-2 rounded-full text-sm font-bold">
+            <div className="absolute -top-4 right-8 bg-[#2C3E50] text-white px-6 py-2 rounded-full text-sm font-bold">
               추천
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">프리미엄</h2>
@@ -181,7 +173,7 @@ export default function PricingPage() {
             
             <ul className="space-y-4 mb-8">
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -189,7 +181,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -198,7 +190,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -207,7 +199,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -216,7 +208,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -225,7 +217,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -234,7 +226,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -243,7 +235,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -252,7 +244,7 @@ export default function PricingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <div>
@@ -311,7 +303,7 @@ export default function PricingPage() {
             <button 
               onClick={handleStartPremium}
               disabled={loading}
-              className="w-full bg-amber-800 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#2C3E50] text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-[#1A252F] transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? '처리 중...' : '프리미엄 시작하기'}
             </button>
@@ -360,16 +352,7 @@ export default function PricingPage() {
                 환불 정책은 어떻게 되나요?
               </summary>
               <p className="mt-4 text-gray-600 pl-4 border-l-4 border-amber-200">
-                7일 무료 체험 후 자동 결제됩니다. 체험 기간 동안 언제든 해지 가능합니다.
-              </p>
-            </details>
-            
-            <details className="bg-gray-50 p-6 rounded-xl hover:bg-gray-100 transition cursor-pointer">
-              <summary className="font-semibold text-gray-900 cursor-pointer">
-                학교급/지역 선택/변경은 어떻게 하나요?
-              </summary>
-              <p className="mt-4 text-gray-600 pl-4 border-l-4 border-amber-200">
-                구독 신청 시 초등/중등/고등과 지역을 선택하시면 되며, 이후 변경도 가능합니다.
+                구독 후 언제든 해지 가능하며, 해지 시 다음 결제일부터 청구되지 않습니다.
               </p>
             </details>
           </div>
@@ -377,16 +360,22 @@ export default function PricingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 mt-20">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="mb-4 flex justify-center">
-            <Image src="/2.png" alt="harmonyclass" width={320} height={112} className="h-28 w-auto object-contain" />
+      <footer className="bg-gray-900 text-white py-12 px-4 rounded-t-[200px] mt-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="mb-6">
+            <div className="mb-4 flex justify-center">
+              <Image src="/2.png" alt="harmonyclass" width={320} height={112} className="h-28 w-auto object-contain" />
+            </div>
+            <p className="text-gray-400">음악 교사를 위한 수업 아이디어 뉴스레터</p>
           </div>
-          <p className="font-title text-gray-400 mb-4">
-            매주 월요일, 음악 수업이 쉬워집니다
-          </p>
-          <div className="text-sm text-gray-500">
-            © 2026 harmonyclass. All rights reserved.
+          
+          <div className="mb-6 text-sm text-gray-400">
+            <p>contact@harmonyclass.com</p>
+            <p className="mt-1">카카오톡: @harmonyclass</p>
+          </div>
+          
+          <div className="border-t border-gray-800 pt-6 text-sm text-gray-500">
+            <p>© 2026 harmonyclass. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -412,7 +401,7 @@ export default function PricingPage() {
               </button>
               <button
                 onClick={() => router.push('/login')}
-                className="flex-1 px-4 py-3 bg-amber-800 text-white rounded-xl font-semibold hover:bg-amber-900 transition"
+                className="flex-1 px-4 py-3 bg-[#2C3E50] text-white rounded-xl font-semibold hover:bg-[#1A252F] transition"
               >
                 로그인
               </button>
@@ -421,7 +410,7 @@ export default function PricingPage() {
               아직 계정이 없으신가요?{' '}
               <button 
                 onClick={() => router.push('/signup')}
-                className="text-amber-800 font-semibold hover:underline"
+                className="text-[#2C3E50] font-semibold hover:underline"
               >
                 회원가입
               </button>

@@ -66,7 +66,7 @@ export default function MainContent() {
             className="font-title text-xl md:text-2xl font-medium text-gray-900"
           >
             그래서, 필요한 건<br className="md:hidden" /> 
-            <span className="text-amber-800"> 학년에 맞게 이미 정리된 수업 자료</span>입니다.
+            <span className="text-[#2C3E50]"> 학년에 맞게 이미 정리된 수업 자료</span>입니다.
           </motion.p>
         </div>
       </section>
@@ -111,7 +111,7 @@ export default function MainContent() {
                 ),
                 title: '학년별 수업안',
                 description: '초등, 중등, 고등 각 학교급에 맞춘 40분 수업 흐름',
-                color: 'bg-amber-100 text-amber-800'
+                color: 'bg-slate-100 text-[#2C3E50]'
               },
               {
                 icon: (

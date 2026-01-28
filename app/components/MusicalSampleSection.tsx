@@ -1,295 +1,151 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+interface NewsItem {
+  id: number;
+  title: string;
+  description: string;
+  link: string;
+  pubDate: string;
+  source: string;
+}
+
+const KEYWORDS = [
+  { id: 'music', label: '음악교육', query: '음악교육' },
+  { id: 'art', label: '예술교육', query: '예술교육' },
+  { id: 'edu', label: '교육정책', query: '교육정책' },
+  { id: 'digital', label: '에듀테크', query: '에듀테크 교육' },
+];
 
 export default function MusicalSampleSection() {
-  const [activeTab, setActiveTab] = useState<'middle' | 'high'>('middle');
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeKeyword, setActiveKeyword] = useState(KEYWORDS[0]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchNews = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/news?keyword=${encodeURIComponent(activeKeyword.query)}`);
+      if (!response.ok) throw new Error('Failed to fetch');
+      const data = await response.json();
+      setNews(data);
+      setError(null);
+    } catch (err) {
+      console.error('Failed to fetch news:', err);
+      setError('뉴스를 불러오는데 실패했습니다');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchNews();
+    setIsRefreshing(false);
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, [activeKeyword]);
 
   return (
     <section id="sample" className="py-20 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
-          이런 내용을 받으실 수 있어요
-        </h2>
-        <p className="text-gray-600 text-center mb-12 text-lg">
-          실제 뉴스레터 샘플 미리보기
-        </p>
-
-        {/* 탭 */}
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <h2 className="font-title text-3xl md:text-4xl font-bold text-gray-900">
+            교육 최신 뉴스
+          </h2>
           <button
-            onClick={() => setActiveTab('middle')}
-            className={`px-8 py-3 rounded-lg font-bold text-lg transition ${
-              activeTab === 'middle'
-                ? 'bg-amber-800 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
+            onClick={handleRefresh}
+            disabled={isLoading || isRefreshing}
+            className="p-2 rounded-full hover:bg-gray-100 transition disabled:opacity-50"
+            title="새로고침"
           >
-            중학교
-          </button>
-          <button
-            onClick={() => setActiveTab('high')}
-            className={`px-8 py-3 rounded-lg font-bold text-lg transition ${
-              activeTab === 'high'
-                ? 'bg-amber-800 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            고등학교
+            <svg 
+              className={`w-6 h-6 text-gray-500 ${isRefreshing ? 'animate-spin' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" 
+              />
+            </svg>
           </button>
         </div>
+        <p className="text-gray-600 text-center mb-8 text-lg">
+          교육 관련 최신 소식을 한눈에
+        </p>
 
-        {/* 중학교 내용 */}
-        {activeTab === 'middle' && (
-          <div className="space-y-6">
-            {/* 1차시 - 선명 */}
-            <div className="bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">중학교 뮤지컬 수업 - 1차시</div>
-                  <div className="text-xs text-gray-400">뮤지컬의 역사와 특징</div>
-                </div>
+        {/* 키워드 탭 */}
+        <div className="grid grid-cols-2 md:flex md:justify-center gap-3 mb-8 max-w-md md:max-w-none mx-auto">
+          {KEYWORDS.map((keyword) => (
+            <button
+              key={keyword.id}
+              onClick={() => setActiveKeyword(keyword)}
+              className={`px-6 py-2 rounded-full font-semibold transition-all text-center ${
+                activeKeyword.id === keyword.id
+                  ? 'bg-[#2C3E50] text-white shadow-md'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {keyword.label}
+            </button>
+          ))}
+        </div>
 
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">📚 수업 목표</h3>
-                    <ul className="space-y-2 text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>뮤지컬의 기원과 발전 과정을 설명할 수 있다</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>뮤지컬의 주요 구성 요소(음악, 연기, 춤)를 구분하고 설명할 수 있다</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>대표적인 뮤지컬 작품의 특징을 설명할 수 있다</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">⏱️ 수업 흐름 (45분)</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">도입 (10분)</span>
-                        <span className="text-sm text-gray-700">뮤지컬 영상 감상 및 흥미 유발</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">전개 (30분)</span>
-                        <span className="text-sm text-gray-700">뮤지컬 역사, 구성 요소, 작품 분석</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">정리 (5분)</span>
-                        <span className="text-sm text-gray-700">정리 및 다음 차시 안내</span>
-                      </div>
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50]"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 text-gray-500">
+            {error}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {news.map((item) => (
+              <a
+                key={item.id}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-amber-200 cursor-pointer group"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-[#2C3E50]">
+                        뉴스
+                      </span>
+                      <span className="text-xs text-gray-400">{item.source}</span>
                     </div>
-                  </div>
-
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-700">
-                      <strong>추천 작품:</strong> 맘마미아, 빨래(참 예뻐요), 캣츠(Memory), 위키드(Popular)
+                    <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-[#2C3E50] transition">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2">
+                      {item.description}
                     </p>
                   </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs text-gray-400">{item.pubDate}</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            {/* 2차시 - 흐릿 */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="blur-sm bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">중학교 뮤지컬 수업 - 2차시</div>
-                  <div className="text-xs text-gray-400">뮤지컬 유명 넘버 배우기</div>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-gray-700">맘마미아, 캣츠 Memory, 빨래 참 예뻐요 등...</p>
-                  <p className="text-gray-700">학생 선택형 넘버 배우기 활동...</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-8 py-6 rounded-2xl shadow-xl text-center">
-                  <div className="text-4xl mb-3">🔒</div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">프리미엄 전용</h4>
-                  <p className="text-gray-600 mb-2 font-medium">뮤지컬 유명 넘버 배우기</p>
-                  <p className="text-sm text-gray-500 mb-4">(맘마미아, 캣츠 Memory, 빨래 참 예뻐요 등 선택하여 배우기)</p>
-                  <button className="bg-amber-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-900 transition">
-                    프리미엄 시작하기
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* 3차시 - 흐릿 */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="blur-sm bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">중학교 뮤지컬 수업 - 3차시</div>
-                  <div className="text-xs text-gray-400">북크리에이터로 팜플렛 만들기</div>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-gray-700">내가 선택한 뮤지컬 넘버 소개...</p>
-                  <p className="text-gray-700">북크리에이터 활용 디지털 팜플렛 제작...</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-8 py-6 rounded-2xl shadow-xl text-center">
-                  <div className="text-4xl mb-3">🔒</div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">프리미엄 전용</h4>
-                  <p className="text-gray-600 mb-2 font-medium">북크리에이터로 팜플렛 만들기</p>
-                  <p className="text-sm text-gray-500 mb-4">(내가 선택한 뮤지컬 넘버를 소개하는 디지털 팜플렛 제작)</p>
-                  <button className="bg-amber-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-900 transition">
-                    프리미엄 시작하기
-                  </button>
-                </div>
-              </div>
-            </div>
+              </a>
+            ))}
           </div>
         )}
 
-        {/* 고등학교 내용 */}
-        {activeTab === 'high' && (
-          <div className="space-y-6">
-            {/* 1차시 - 선명 */}
-            <div className="bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">고등학교 뮤지컬 수업 - 1차시</div>
-                  <div className="text-xs text-gray-400">뮤지컬의 역사와 특징</div>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">📚 수업 목표</h3>
-                    <ul className="space-y-2 text-gray-700">
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>뮤지컬의 기원과 발전 과정을 설명할 수 있다</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>뮤지컬의 주요 구성 요소(음악, 연기, 춤)를 구분하고 설명할 수 있다</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">•</span>
-                        <span>대표적인 뮤지컬 작품의 특징을 설명할 수 있다</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">⏱️ 수업 흐름 (45분)</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">도입 (5분)</span>
-                        <span className="text-sm text-gray-700">뮤지컬 영상 감상 및 흥미 유발</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">전개 (35분)</span>
-                        <span className="text-sm text-gray-700">뮤지컬 역사, 구성 요소, 작품 심화 분석</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="text-sm font-semibold text-gray-900 min-w-[80px]">정리 (5분)</span>
-                        <span className="text-sm text-gray-700">정리 및 다음 차시 안내</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-700">
-                      <strong>추천 작품:</strong> 위키드(Defying Gravity), 오페라의 유령, 렌트(Seasons of Love), 레미제라블
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 2차시 - 흐릿 */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="blur-sm bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">고등학교 뮤지컬 수업 - 2차시</div>
-                  <div className="text-xs text-gray-400">뮤지컬 유명 넘버 배우기 (심화)</div>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-gray-700">Defying Gravity, 오페라의 유령, 렌트 등...</p>
-                  <p className="text-gray-700">고난이도 넘버 배우기 활동...</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-8 py-6 rounded-2xl shadow-xl text-center">
-                  <div className="text-4xl mb-3">🔒</div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">프리미엄 전용</h4>
-                  <p className="text-gray-600 mb-2 font-medium">뮤지컬 고난이도 넘버 배우기</p>
-                  <p className="text-sm text-gray-500 mb-4">(Defying Gravity, 오페라의 유령, 렌트 Seasons of Love 등)</p>
-                  <button className="bg-amber-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-900 transition">
-                    프리미엄 시작하기
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* 3차시 - 흐릿 */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="blur-sm bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">고등학교 뮤지컬 수업 - 3차시</div>
-                  <div className="text-xs text-gray-400">북크리에이터로 팜플렛 만들기</div>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-gray-700">내가 선택한 뮤지컬 넘버 소개...</p>
-                  <p className="text-gray-700">북크리에이터 활용 디지털 팜플렛 제작...</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-8 py-6 rounded-2xl shadow-xl text-center">
-                  <div className="text-4xl mb-3">🔒</div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">프리미엄 전용</h4>
-                  <p className="text-gray-600 mb-2 font-medium">북크리에이터로 팜플렛 만들기</p>
-                  <p className="text-sm text-gray-500 mb-4">(내가 선택한 뮤지컬 넘버를 소개하는 디지털 팜플렛 제작)</p>
-                  <button className="bg-amber-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-900 transition">
-                    프리미엄 시작하기
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* 4차시 - 흐릿 */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-amber-50 p-8 md:p-12 rounded-3xl shadow-lg">
-              <div className="blur-sm bg-white p-8 rounded-2xl shadow-sm">
-                <div className="border-b border-gray-200 pb-4 mb-6">
-                  <div className="text-sm text-gray-500 mb-2">고등학교 뮤지컬 수업 - 4차시</div>
-                  <div className="text-xs text-gray-400">Spotvirtual로 메타버스 도서관 만들기</div>
-                </div>
-                <div className="space-y-4">
-                  <p className="text-gray-700">나만의 뮤지컬 방/도서관 만들기...</p>
-                  <p className="text-gray-700">Spotvirtual로 서로 탐방하기...</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 px-8 py-6 rounded-2xl shadow-xl text-center">
-                  <div className="text-4xl mb-3">🔒</div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">프리미엄 전용</h4>
-                  <p className="text-gray-600 mb-2 font-medium">Spotvirtual로 메타버스 도서관 만들기</p>
-                  <p className="text-sm text-gray-500 mb-4">(나만의 뮤지컬 방/도서관을 만들고 서로 탐방하기)</p>
-                  <button className="bg-amber-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-900 transition">
-                    프리미엄 시작하기
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="text-center mt-12">
-          <Link 
-            href="/samples"
-            className="inline-block bg-amber-800 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-lg"
-          >
-            수업 자료 더보기 →
-          </Link>
+        <div className="text-center mt-8">
+          <p className="text-sm text-gray-500">
+            네이버 뉴스 API 기반 · 실시간 업데이트
+          </p>
         </div>
       </div>
     </section>

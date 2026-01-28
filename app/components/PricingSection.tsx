@@ -8,7 +8,7 @@ export default function PricingSection() {
           자신에게 맞는 요금제를 선택하세요
         </h2>
         <p className="font-title text-gray-600 text-center mb-12 text-lg">
-          7일 무료 체험 후 자동 결제
+          언제든 해지 가능
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -46,7 +46,7 @@ export default function PricingSection() {
 
           {/* 프리미엄 플랜 */}
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl shadow-lg border-2 border-amber-300 relative">
-            <div className="absolute -top-4 right-8 bg-amber-800 text-white px-4 py-1 rounded-full text-sm font-bold">
+            <div className="absolute -top-4 right-8 bg-[#2C3E50] text-white px-4 py-1 rounded-full text-sm font-bold">
               추천
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">프리미엄</h3>
@@ -59,25 +59,25 @@ export default function PricingSection() {
             </p>
             <ul className="space-y-3 mb-8">
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">전체 차시 수업</span>
               </li>
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">악보, 운지표, 활동지 PDF</span>
               </li>
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">평가 루브릭</span>
               </li>
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">지역별 공연 정보</span>
@@ -85,7 +85,7 @@ export default function PricingSection() {
             </ul>
             <Link 
               href="/pricing"
-              className="block w-full text-center bg-amber-800 text-white px-6 py-3 rounded-xl font-semibold hover:bg-amber-900 transition shadow-lg"
+              className="block w-full text-center bg-[#2C3E50] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1A252F] transition shadow-lg"
             >
               프리미엄 시작하기
             </Link>

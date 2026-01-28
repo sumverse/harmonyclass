@@ -139,13 +139,13 @@ export default function PricingModal({ isOpen, onClose }: PricingModalProps) {
           {/* Premium Plan */}
           <div className="pricing-card premium bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 relative">
             <div className="absolute top-4 right-4">
-              <span className="bg-gradient-to-r from-amber-700 to-amber-900 text-white px-3 py-1 rounded-full text-xs font-bold">
+              <span className="bg-[#2C3E50] text-white px-3 py-1 rounded-full text-xs font-bold">
                 추천
               </span>
             </div>
             
             <div className="text-center mb-6">
-              <div className="inline-block bg-gradient-to-r from-amber-700 to-amber-900 text-white px-4 py-1 rounded-full text-sm font-semibold mb-4">
+              <div className="inline-block bg-[#2C3E50] text-white px-4 py-1 rounded-full text-sm font-semibold mb-4">
                 프리미엄
               </div>
               <div className="mb-4">
@@ -157,55 +157,55 @@ export default function PricingModal({ isOpen, onClose }: PricingModalProps) {
             
             <ul className="space-y-4 mb-8">
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">무료 플랜의 모든 혜택</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">전체 차시 수업</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">악보 PDF (편곡본)</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">운지표 (칼라/흑백)</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">평가 루브릭</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">활동지 PDF</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">연계 차시 계획서</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">과거 뉴스레터 전체 열람</span>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-amber-800 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-[#2C3E50] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span className="text-gray-900 font-medium">지역별 공연 정보</span>
@@ -214,7 +214,7 @@ export default function PricingModal({ isOpen, onClose }: PricingModalProps) {
             
             <button 
               onClick={() => handleSelectPlan('premium')}
-              className="w-full bg-gradient-to-r from-amber-700 to-amber-900 text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg"
+              className="w-full bg-[#2C3E50] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#1A252F] transition shadow-lg"
             >
               프리미엄 시작하기
             </button>

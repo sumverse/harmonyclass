@@ -72,7 +72,7 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50] mx-auto mb-4"></div>
           <p className="text-gray-600">확인 중...</p>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#2C3E50] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1A252F] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? '로그인 중...' : '로그인하기'}
           </button>
@@ -138,7 +138,7 @@ export default function LoginPage() {
         <div className="mt-6 text-center space-y-3">
           <Link 
             href="/forgot-password" 
-            className="block text-amber-800 hover:text-amber-900 text-sm font-medium"
+            className="block text-blue-600 hover:text-blue-800 text-sm font-medium underline"
           >
             비밀번호를 잊으셨나요?
           </Link>
@@ -149,7 +149,7 @@ export default function LoginPage() {
             </p>
             <Link
               href="/signup"
-              className="text-amber-800 hover:text-amber-900 font-semibold"
+              className="text-blue-600 hover:text-blue-800 font-bold text-lg underline"
             >
               회원가입하기
             </Link>
@@ -157,7 +157,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-gray-500 hover:text-gray-700 text-sm">
+          <Link href="/" className="text-gray-600 hover:text-gray-800 text-sm font-medium">
             ← 홈으로 돌아가기
           </Link>
         </div>

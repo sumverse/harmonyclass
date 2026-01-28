@@ -37,14 +37,14 @@ function WelcomeModal() {
           교육 트렌드를 보내드릴게요!
         </p>
         <div className="bg-amber-50 rounded-lg p-4 mb-6">
-          <p className="text-sm text-amber-800">
+          <p className="text-sm text-[#2C3E50]">
             📬 첫 번째 뉴스레터가 곧 발송됩니다.<br />
             <strong>스팸함도 확인해주세요!</strong>
           </p>
         </div>
         <button
           onClick={() => setShowWelcome(false)}
-          className="w-full bg-amber-800 text-white px-6 py-3 rounded-xl font-semibold hover:bg-amber-900 transition"
+          className="w-full bg-[#2C3E50] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1A252F] transition"
         >
           시작하기
         </button>
@@ -67,7 +67,7 @@ export default function Home() {
       <FAQSection />
       
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
+      <footer className="bg-gray-900 text-white py-12 px-4 rounded-t-[200px]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-6">
             <div className="mb-4 flex justify-center">
@@ -77,20 +77,13 @@ export default function Home() {
           </div>
           
           <div className="mb-6 text-sm text-gray-400">
-            <p>📧 contact@harmonyclass.com</p>
-            <p className="mt-1">💬 카카오톡: @harmonyclass</p>
-            {process.env.NEXT_PUBLIC_STIBEE_SUBSCRIBE_URL && (
-              <p className="mt-2">
-                <a href={process.env.NEXT_PUBLIC_STIBEE_SUBSCRIBE_URL} target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline">
-                  뉴스레터로 소식 받기 (무료)
-                </a>
-              </p>
-            )}
+            <p>contact@harmonyclass.com</p>
+            <p className="mt-1">카카오톡: @harmonyclass</p>
           </div>
           
           <div className="border-t border-gray-800 pt-6 text-sm text-gray-500">
             <p>© 2026 harmonyclass. All rights reserved.</p>
-            <p className="mt-2">Made with 💜 for Music Teachers</p>
+            <p className="mt-2">Made with love for Music Teachers</p>
           </div>
         </div>
       </footer>

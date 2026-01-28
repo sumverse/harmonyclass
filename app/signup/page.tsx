@@ -200,7 +200,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#2C3E50] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1A252F] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? '회원가입 중...' : '회원가입하기'}
           </button>
@@ -223,14 +223,14 @@ export default function SignupPage() {
           </p>
           <Link
             href="/login"
-            className="text-amber-800 hover:text-amber-900 font-semibold"
+            className="text-blue-600 hover:text-blue-800 font-bold text-lg underline"
           >
             로그인하기
           </Link>
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-gray-500 hover:text-gray-700 text-sm">
+          <Link href="/" className="text-gray-600 hover:text-gray-800 text-sm font-medium">
             ← 홈으로 돌아가기
           </Link>
         </div>

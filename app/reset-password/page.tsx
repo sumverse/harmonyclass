@@ -115,7 +115,7 @@ export default function ResetPasswordPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50] mx-auto mb-4"></div>
           <p className="text-gray-600">확인 중...</p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#2C3E50] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1A252F] transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? '변경 중...' : '비밀번호 변경하기'}
             </button>
@@ -212,7 +212,7 @@ export default function ResetPasswordPage() {
           <div className="text-center">
             <Link
               href="/forgot-password"
-              className="inline-block bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition"
+              className="inline-block bg-[#2C3E50] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1A252F] transition"
             >
               비밀번호 재설정 다시 요청하기
             </Link>

@@ -39,9 +39,9 @@ export default function SubscribeButton({ email, userId }: SubscribeButtonProps)
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
       
       if (stripe) {
-        const { error: stripeError } = await stripe.redirectToCheckout({ sessionId });
-        if (stripeError) {
-          alert('결제 페이지 이동 실패: ' + stripeError.message);
+        const result = await stripe.redirectToCheckout({ sessionId });
+        if (result.error) {
+          alert('결제 페이지 이동 실패: ' + result.error.message);
           setLoading(false);
         }
       }

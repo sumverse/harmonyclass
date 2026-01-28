@@ -508,7 +508,7 @@ export default function Hero() {
                     opacity: currentSection === index ? 1 : 0,
                     y: currentSection === index ? 0 : 20
                   }}
-                  transition={{ duration: 0.4, delay: section.subtitle ? 0.5 : (section.description ? 0.4 : 0.6) }}
+                  transition={{ duration: 0.4, delay: section.subtitle ? 0.5 : 0.6 }}
                   className="space-y-4"
                 >
                   <button 

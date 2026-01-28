@@ -8,6 +8,7 @@ import Link from 'next/link';
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [checkingSession, setCheckingSession] = useState(true);
@@ -17,7 +18,6 @@ export default function LoginPage() {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        // 이미 로그인되어 있으면 프로필 페이지로 리다이렉트
         router.push('/profile');
       } else {
         setCheckingSession(false);
@@ -34,36 +34,34 @@ export default function LoginPage() {
       setLoading(true);
       setMessage('');
 
-      const { error, data } = await supabase.auth.signInWithOtp({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
+        password: password,
       });
 
       if (error) {
-        console.error('Supabase error:', error);
         throw error;
       }
 
-      setMessage('✅ 이메일을 확인해주세요! 로그인 링크를 보내드렸습니다.');
+      // 로그인 성공
+      router.push('/profile');
+      
     } catch (error: any) {
       console.error('Login error:', error);
       
       let errorMessage = '로그인 중 오류가 발생했습니다.';
       
       if (error?.message) {
-        errorMessage = error.message;
-      } else if (error?.error_description) {
-        errorMessage = error.error_description;
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.';
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = '이메일 인증이 필요합니다. 이메일을 확인해주세요.';
+        } else {
+          errorMessage = error.message;
+        }
       }
       
-      // 네트워크 오류인 경우 더 친화적인 메시지
-      if (errorMessage.includes('fetch') || errorMessage.includes('Failed to fetch') || errorMessage.includes('ERR_NAME_NOT_RESOLVED')) {
-        errorMessage = '네트워크 오류가 발생했습니다. Supabase URL과 키를 확인해주세요.';
-      }
-      
-      setMessage(`❌ 오류: ${errorMessage}`);
+      setMessage(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -87,7 +85,7 @@ export default function LoginPage() {
           <Link href="/" className="text-3xl font-bold text-gray-900 mb-2 block">
             harmonyclass
           </Link>
-          <p className="text-gray-600">매직 링크로 간편하게 로그인</p>
+          <p className="text-gray-600">로그인하여 시작하세요</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
@@ -106,28 +104,59 @@ export default function LoginPage() {
             />
           </div>
 
+          <div>
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-900 mb-2">
+              비밀번호
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:outline-none"
+            />
+          </div>
+
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? '전송 중...' : '로그인 링크 받기'}
+            {loading ? '로그인 중...' : '로그인하기'}
           </button>
         </form>
 
         {message && (
-          <div className={`mt-6 p-4 rounded-lg ${message.includes('✅') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+          <div className="mt-6 p-4 rounded-lg bg-red-50 text-red-800">
             {message}
           </div>
         )}
 
-        <div className="mt-6 text-center text-sm text-gray-600 space-y-1">
-          <p>비밀번호가 필요 없어요!</p>
-          <p>이메일로 받은 링크를 클릭하면 자동 로그인됩니다.</p>
+        <div className="mt-6 text-center space-y-3">
+          <Link 
+            href="/forgot-password" 
+            className="block text-amber-800 hover:text-amber-900 text-sm font-medium"
+          >
+            비밀번호를 잊으셨나요?
+          </Link>
+          
+          <div className="pt-3 border-t border-gray-200">
+            <p className="text-sm text-gray-600 mb-2">
+              계정이 없으신가요?
+            </p>
+            <Link
+              href="/signup"
+              className="text-amber-800 hover:text-amber-900 font-semibold"
+            >
+              회원가입하기
+            </Link>
+          </div>
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-amber-800 hover:text-amber-900 text-sm font-medium">
+          <Link href="/" className="text-gray-500 hover:text-gray-700 text-sm">
             ← 홈으로 돌아가기
           </Link>
         </div>

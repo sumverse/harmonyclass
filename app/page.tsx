@@ -2,10 +2,8 @@
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import MainContent from './components/MainContent';
 import MusicalSampleSection from './components/MusicalSampleSection';
 import ReviewsSection from './components/ReviewsSection';
-import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
 
 export default function Home() {
@@ -13,10 +11,8 @@ export default function Home() {
     <div className="bg-gray-50">
       <Navbar />
       <Hero />
-      <MainContent />
       <MusicalSampleSection />
       <ReviewsSection />
-      <PricingSection />
       <FAQSection />
       
       {/* Footer */}

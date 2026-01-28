@@ -2,10 +2,68 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function PricingPage() {
+  const router = useRouter();
   const [schoolLevel, setSchoolLevel] = useState('elementary');
   const [region, setRegion] = useState('seoul');
+  const [loading, setLoading] = useState(false);
+
+  // 🎯 결제 시작 함수
+  const handleStartPremium = async () => {
+    setLoading(true);
+    
+    try {
+      // 1. 로그인 확인
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        alert('로그인이 필요합니다!');
+        router.push('/login');
+        return;
+      }
+
+      // 2. Stripe Checkout 세션 생성
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.email,
+          userId: user.id,
+          schoolLevel,
+          region,
+        }),
+      });
+
+      const { sessionId, error } = await response.json();
+
+      if (error) {
+        alert('오류가 발생했습니다: ' + error);
+        return;
+      }
+
+      // 3. Stripe Checkout으로 리다이렉트
+      const stripe = await import('@stripe/stripe-js').then(mod => 
+        mod.loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+      );
+      
+      if (stripe) {
+        await stripe.redirectToCheckout({ sessionId });
+      }
+    } catch (error: any) {
+      console.error('결제 오류:', error);
+      alert('결제 처리 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -230,8 +288,12 @@ export default function PricingPage() {
               </div>
             </div>
 
-            <button className="w-full bg-amber-800 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-lg">
-              프리미엄 시작하기
+            <button 
+              onClick={handleStartPremium}
+              disabled={loading}
+              className="w-full bg-amber-800 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? '처리 중...' : '프리미엄 시작하기'}
             </button>
           </div>
         </div>

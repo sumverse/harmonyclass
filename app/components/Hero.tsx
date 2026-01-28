@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { supabase } from '../lib/supabase';
 
 const sections = [
   {
@@ -51,6 +53,8 @@ const sections = [
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState(0);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const router = useRouter();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -68,6 +72,23 @@ export default function Hero() {
 
     return () => unsubscribe();
   }, [scrollYProgress]);
+
+  // 무료 구독하기 버튼 클릭 핸들러
+  const handleFreeSubscribe = async () => {
+    // 로그인 상태 확인
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      // 로그인 안 됨 → 로그인 모달 표시
+      setShowLoginModal(true);
+      return;
+    }
+    
+    // 로그인 됨 → MailerLite 팝업 띄우기
+    if (typeof window !== 'undefined' && (window as any).ml) {
+      (window as any).ml('show', 'V8CClE', true);
+    }
+  };
 
   return (
     <div ref={containerRef} className="relative" style={{ height: `${sections.length * 60}vh` }}>
@@ -114,7 +135,7 @@ export default function Hero() {
                   y: currentSection === index ? 0 : 20
                 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className={`font-bold mb-8 leading-tight whitespace-pre-line ${
+                className={`font-title font-bold mb-8 leading-tight whitespace-pre-line ${
                   section.type === 'problems' ? 'text-3xl md:text-5xl text-gray-900' :
                   section.type === 'solution' ? 'text-3xl md:text-5xl text-gray-900' :
                   section.type === 'cta' ? 'text-3xl md:text-5xl text-gray-900' :
@@ -200,12 +221,12 @@ export default function Hero() {
                   transition={{ duration: 0.4, delay: section.description ? 0.4 : 0.6 }}
                   className="space-y-4"
                 >
-                  <Link 
-                    href="/pricing"
-                    className="inline-block bg-amber-800 text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-2xl"
+                  <button 
+                    onClick={handleFreeSubscribe}
+                    className="font-title inline-block bg-amber-800 text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-amber-900 transition shadow-2xl cursor-pointer"
                   >
-                    7일 무료 체험하기 →
-                  </Link>
+                    무료 구독하기 →
+                  </button>
                   
                   <p className="text-gray-600 text-sm mt-4">
                     ✓ 신용카드 등록 없음 &nbsp; ✓ 언제든 해지 가능
@@ -478,6 +499,45 @@ export default function Hero() {
           ))}
         </div>
       </div>
+
+      {/* 로그인 필요 모달 */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+            <div className="text-5xl mb-4">🔐</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              로그인이 필요합니다
+            </h2>
+            <p className="text-gray-600 mb-6">
+              무료 뉴스레터를 구독하려면<br />
+              먼저 로그인해주세요!
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition"
+              >
+                취소
+              </button>
+              <button
+                onClick={() => router.push('/login')}
+                className="flex-1 px-4 py-3 bg-amber-800 text-white rounded-xl font-semibold hover:bg-amber-900 transition"
+              >
+                로그인
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              아직 계정이 없으신가요?{' '}
+              <button 
+                onClick={() => router.push('/signup')}
+                className="text-amber-800 font-semibold hover:underline"
+              >
+                회원가입
+              </button>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

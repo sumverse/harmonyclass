@@ -51,59 +51,123 @@ export default function Navbar() {
 
   return (
     <nav 
-      className={`fixed top-8 left-0 right-0 z-50 transition-all duration-300`}
+      className={`fixed top-4 left-0 right-0 z-50 transition-all duration-300`}
       style={{
         backgroundColor: 'transparent',
       }}
     >
-      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center">
+      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+        {/* 왼쪽 빈 공간 (로고 중앙 배치를 위한) */}
+        <div className="flex-1"></div>
+        
+        {/* 로고 중앙 배치 */}
+        <div className="flex-1 flex justify-center">
           <Image 
-            src="/logo.png" 
+            src="/2.png" 
             alt="harmonyclass logo" 
-            width={120} 
-            height={120}
-            className="rounded-lg"
+            width={240} 
+            height={240}
+            className="rounded-lg w-[240px] h-auto object-contain"
           />
         </div>
         
-        <div className="hidden md:flex items-center gap-6">
-          <button 
-            onClick={() => scrollToSection('home')} 
-            className="nav-link font-medium text-white/90 hover:text-white transition"
-          >
-            홈
-          </button>
-          <button 
-            onClick={() => scrollToSection('intro')} 
-            className="nav-link font-medium text-white/90 hover:text-white transition"
-          >
-            소개
-          </button>
-          <button 
-            onClick={() => scrollToSection('sample')} 
-            className="nav-link font-medium text-white/90 hover:text-white transition"
-          >
-            샘플
-          </button>
+        {/* 네비게이션 메뉴 - 오른쪽 배치 */}
+        <div className="flex-1 hidden md:flex items-center justify-end gap-6">
+          <div className="relative group">
+            <button 
+              onClick={() => scrollToSection('home')} 
+              className="font-title font-medium text-base text-gray-900 hover:text-gray-700 transition relative z-10"
+            >
+              홈
+            </button>
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-2 pointer-events-none z-20 w-[56px] h-[56px]">
+              <Image 
+                src="/5.png" 
+                alt="" 
+                width={56} 
+                height={56}
+                className="animate-bounce w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          <div className="relative group">
+            <button 
+              onClick={() => scrollToSection('intro')} 
+              className="font-title font-medium text-base text-gray-900 hover:text-gray-700 transition relative z-10"
+            >
+              소개
+            </button>
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-2 pointer-events-none z-20 w-[56px] h-[56px]">
+              <Image 
+                src="/5.png" 
+                alt="" 
+                width={56} 
+                height={56}
+                className="animate-bounce w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          <div className="relative group">
+            <button 
+              onClick={() => scrollToSection('sample')} 
+              className="font-title font-medium text-base text-gray-900 hover:text-gray-700 transition relative z-10"
+            >
+              샘플
+            </button>
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-2 pointer-events-none z-20 w-[56px] h-[56px]">
+              <Image 
+                src="/5.png" 
+                alt="" 
+                width={56} 
+                height={56}
+                className="animate-bounce w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
           {user ? (
-            <Link 
-              href="/profile"
-              className="nav-link font-medium text-white/90 hover:text-white transition"
-            >
-              마이페이지
-            </Link>
+            <div className="relative group">
+              <Link 
+                href="/profile"
+                className="font-title font-medium text-base text-gray-900 hover:text-gray-700 transition relative z-10"
+              >
+                마이페이지
+              </Link>
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-2 pointer-events-none z-20 w-[56px] h-[56px]">
+                <Image 
+                  src="/5.png" 
+                  alt="" 
+                  width={56} 
+                  height={56}
+                  className="animate-bounce w-full h-full object-contain"
+                />
+              </div>
+            </div>
           ) : (
-            <Link 
-              href="/login"
-              className="nav-link font-medium text-white/90 hover:text-white transition"
-            >
-              로그인
-            </Link>
+            <div className="relative group">
+              <Link 
+                href="/login"
+                className="font-title font-medium text-base text-gray-900 hover:text-gray-700 transition relative z-10"
+              >
+                로그인
+              </Link>
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-2 pointer-events-none z-20 w-[56px] h-[56px]">
+                <Image 
+                  src="/5.png" 
+                  alt="" 
+                  width={56} 
+                  height={56}
+                  className="animate-bounce w-full h-full object-contain"
+                />
+              </div>
+            </div>
           )}
+          
           <Link 
             href="/pricing"
-            className="bg-white/20 backdrop-blur-md text-white px-5 py-2 rounded-lg font-semibold hover:bg-white/30 transition border border-white/30"
+            className="font-title bg-amber-800 text-white px-5 py-2 rounded-lg font-semibold hover:bg-amber-900 transition relative z-10"
           >
             구독하기
           </Link>

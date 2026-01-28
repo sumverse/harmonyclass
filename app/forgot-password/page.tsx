@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -46,8 +47,8 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-bold text-gray-900 mb-2 block">
-            harmonyclass
+          <Link href="/" className="mb-2 block w-fit mx-auto">
+            <Image src="/2.png" alt="harmonyclass" width={280} height={104} className="h-24 w-auto object-contain mx-auto" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-2">비밀번호 재설정</h1>
           <p className="text-gray-600">

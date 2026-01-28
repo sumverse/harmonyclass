@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 
@@ -15,6 +16,24 @@ export default function PricingPage() {
   const [schoolLevel, setSchoolLevel] = useState('elementary');
   const [region, setRegion] = useState('seoul');
   const [loading, setLoading] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // 무료 구독하기 버튼 클릭 핸들러
+  const handleFreeSubscribe = async () => {
+    // 로그인 상태 확인
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      // 로그인 안 됨 → 로그인 모달 표시
+      setShowLoginModal(true);
+      return;
+    }
+    
+    // 로그인 됨 → MailerLite 팝업 띄우기
+    if (typeof window !== 'undefined' && (window as any).ml) {
+      (window as any).ml('show', 'V8CClE', true);
+    }
+  };
 
   // 🎯 결제 시작 함수
   const handleStartPremium = async () => {
@@ -68,8 +87,8 @@ export default function PricingPage() {
       {/* Header */}
       <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            harmonyclass
+          <Link href="/" className="block">
+            <Image src="/2.png" alt="harmonyclass" width={260} height={88} className="h-24 w-auto object-contain" />
           </Link>
           <Link href="/" className="text-gray-600 hover:text-gray-900">
             ← 홈으로
@@ -80,10 +99,10 @@ export default function PricingPage() {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="font-title text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             요금제 선택
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="font-title text-gray-600 text-lg">
             7일 무료 체험 후 자동 결제
           </p>
         </div>
@@ -138,7 +157,10 @@ export default function PricingPage() {
               </li>
             </ul>
 
-            <button className="w-full bg-gray-100 text-gray-900 px-6 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition">
+            <button
+              onClick={handleFreeSubscribe}
+              className="w-full bg-gray-100 text-gray-900 px-6 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition"
+            >
               무료로 시작하기
             </button>
           </div>
@@ -298,7 +320,7 @@ export default function PricingPage() {
 
         {/* FAQ */}
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h2 className="font-title text-3xl font-bold text-gray-900 mb-8 text-center">
             자주 묻는 질문
           </h2>
           
@@ -357,8 +379,10 @@ export default function PricingPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4 mt-20">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">harmonyclass</h2>
-          <p className="text-gray-400 mb-6">
+          <div className="mb-4 flex justify-center">
+            <Image src="/2.png" alt="harmonyclass" width={320} height={112} className="h-28 w-auto object-contain" />
+          </div>
+          <p className="font-title text-gray-400 mb-4">
             매주 월요일, 음악 수업이 쉬워집니다
           </p>
           <div className="text-sm text-gray-500">
@@ -366,6 +390,45 @@ export default function PricingPage() {
           </div>
         </div>
       </footer>
+
+      {/* 로그인 필요 모달 */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+            <div className="text-5xl mb-4">🔐</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              로그인이 필요합니다
+            </h2>
+            <p className="text-gray-600 mb-6">
+              무료 뉴스레터를 구독하려면<br />
+              먼저 로그인해주세요!
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition"
+              >
+                취소
+              </button>
+              <button
+                onClick={() => router.push('/login')}
+                className="flex-1 px-4 py-3 bg-amber-800 text-white rounded-xl font-semibold hover:bg-amber-900 transition"
+              >
+                로그인
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              아직 계정이 없으신가요?{' '}
+              <button 
+                onClick={() => router.push('/signup')}
+                className="text-amber-800 font-semibold hover:underline"
+              >
+                회원가입
+              </button>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

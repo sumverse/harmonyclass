@@ -1,10 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { User } from '@supabase/supabase-js';
+
+// 프로필 타입 정의
+interface Profile {
+  id: string;
+  email: string;
+  newsletter_subscribed: boolean;
+  newsletter_tier: 'free' | 'premium' | null;
+  subscription_status?: string;
+  subscription_tier?: string;
+}
 
 // 샘플 수업자료 데이터 (나중에 DB에서 가져올 수 있음)
 const sampleLessons = [
@@ -41,7 +52,37 @@ export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'info' | 'lessons'>('lessons');
+  const [activeTab, setActiveTab] = useState<'lessons' | 'subscription' | 'info'>('lessons');
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  // 프로필 정보 가져오기
+  const fetchProfile = useCallback(async (userId: string, email: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') {
+        console.error('프로필 조회 오류:', error);
+      }
+      
+      if (data) {
+        setProfile(data as Profile);
+      } else {
+        // 프로필이 없으면 기본값 설정
+        setProfile({
+          id: userId,
+          email: email,
+          newsletter_subscribed: false,
+          newsletter_tier: null,
+        });
+      }
+    } catch (error) {
+      console.error('프로필 조회 오류:', error);
+    }
+  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -60,6 +101,10 @@ export default function ProfilePage() {
         }
 
         setUser(session.user);
+        // 프로필 정보 가져오기
+        if (session.user.email) {
+          fetchProfile(session.user.id, session.user.email);
+        }
       } catch (error) {
         console.error('Error checking user:', error);
         router.push('/login');
@@ -76,13 +121,16 @@ export default function ProfilePage() {
         router.push('/login');
       } else {
         setUser(session.user);
+        if (session.user.email) {
+          fetchProfile(session.user.id, session.user.email);
+        }
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [router, fetchProfile]);
 
   const handleLogout = async () => {
     try {
@@ -117,8 +165,8 @@ export default function ProfilePage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <Link href="/" className="text-3xl font-bold text-gray-900 mb-2 block">
-                harmonyclass
+              <Link href="/" className="mb-2 block w-fit">
+                <Image src="/2.png" alt="harmonyclass" width={280} height={104} className="h-24 w-auto object-contain" />
               </Link>
               <p className="text-gray-600">안녕하세요, {user.email}님!</p>
             </div>
@@ -151,6 +199,16 @@ export default function ProfilePage() {
               내 수업자료
             </button>
             <button
+              onClick={() => setActiveTab('subscription')}
+              className={`pb-3 px-4 font-semibold transition ${
+                activeTab === 'subscription'
+                  ? 'text-amber-800 border-b-2 border-amber-800'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              📧 구독 설정
+            </button>
+            <button
               onClick={() => setActiveTab('info')}
               className={`pb-3 px-4 font-semibold transition ${
                 activeTab === 'info'
@@ -164,7 +222,101 @@ export default function ProfilePage() {
         </div>
 
         {/* 콘텐츠 */}
-        {activeTab === 'lessons' ? (
+        {activeTab === 'subscription' ? (
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">📧 메일 구독 설정</h2>
+            
+            {/* 현재 구독 상태 */}
+            <div className="mb-8 p-6 bg-gray-50 rounded-xl">
+              <h3 className="font-semibold text-gray-900 mb-3">현재 상태</h3>
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                  profile?.subscription_tier === 'premium'
+                    ? 'bg-amber-100 text-amber-800' 
+                    : 'bg-gray-200 text-gray-600'
+                }`}>
+                  {profile?.subscription_tier === 'premium' ? '👑 프리미엄 회원' : '무료 회원'}
+                </span>
+              </div>
+            </div>
+
+            {/* 구독 옵션 */}
+            <div className="space-y-6">
+              {/* 무료 뉴스레터 구독 */}
+              <div className="border-2 border-gray-200 rounded-xl p-6 hover:border-amber-300 transition">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">📬 무료 뉴스레터</h3>
+                    <p className="text-gray-600 mb-4">
+                      매주 음악 수업에 도움되는 팁, 새로운 수업자료 소식, 교육 트렌드를 받아보세요.
+                    </p>
+                    <ul className="text-sm text-gray-500 space-y-1">
+                      <li>✓ 주간 음악교육 뉴스레터</li>
+                      <li>✓ 무료 수업자료 미리보기</li>
+                      <li>✓ 교사 커뮤니티 소식</li>
+                    </ul>
+                  </div>
+                  <div className="ml-4">
+                    <button
+                      onClick={() => {
+                        if (typeof window !== 'undefined' && (window as any).ml) {
+                          (window as any).ml('show', 'V8CClE', true);
+                        }
+                      }}
+                      className="px-6 py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition"
+                    >
+                      무료 구독하기 →
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 프리미엄 구독 */}
+              <div className="border-2 border-amber-300 rounded-xl p-6 bg-gradient-to-br from-amber-50 to-orange-50">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-bold text-gray-900">👑 프리미엄 구독</h3>
+                      <span className="px-2 py-0.5 bg-amber-800 text-white text-xs rounded-full">추천</span>
+                    </div>
+                    <p className="text-gray-600 mb-4">
+                      모든 무료 혜택 + 프리미엄 수업자료를 무제한으로 받아보세요.
+                    </p>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>✓ 무료 뉴스레터 모든 혜택</li>
+                      <li>✓ <strong>프리미엄 수업자료 전체 열람</strong></li>
+                      <li>✓ <strong>다운로드 가능한 수업 PPT, 악보</strong></li>
+                      <li>✓ 신규 자료 우선 제공</li>
+                    </ul>
+                  </div>
+                  <div className="ml-4 text-right">
+                    <p className="text-2xl font-bold text-amber-800 mb-2">₩9,900<span className="text-sm font-normal text-gray-500">/월</span></p>
+                    {profile?.subscription_tier !== 'premium' ? (
+                      <Link
+                        href="/pricing"
+                        className="inline-block px-6 py-3 bg-gradient-to-r from-amber-700 to-amber-900 text-white rounded-lg font-semibold hover:from-amber-800 hover:to-amber-950 transition shadow-lg"
+                      >
+                        프리미엄 시작하기
+                      </Link>
+                    ) : (
+                      <span className="inline-block px-4 py-2 bg-amber-200 text-amber-900 rounded-lg text-sm font-semibold">
+                        ✅ 구독 중
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 안내 문구 */}
+            <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-800">
+                💡 <strong>알림:</strong> 뉴스레터는 {user?.email}로 발송됩니다. 
+                스팸함도 확인해주세요!
+              </p>
+            </div>
+          </div>
+        ) : activeTab === 'lessons' ? (
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">📚 받은 수업자료</h2>
             

@@ -14,7 +14,7 @@ export default function MainContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-16 text-center"
+            className="font-title text-3xl md:text-4xl font-bold text-gray-900 mb-16 text-center"
           >
             수업 준비, 왜 이렇게 복잡할까요?
           </motion.h2>
@@ -63,7 +63,7 @@ export default function MainContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="text-xl md:text-2xl font-medium text-gray-900"
+            className="font-title text-xl md:text-2xl font-medium text-gray-900"
           >
             그래서, 필요한 건<br className="md:hidden" /> 
             <span className="text-amber-800"> 학년에 맞게 이미 정리된 수업 자료</span>입니다.
@@ -81,7 +81,7 @@ export default function MainContent() {
             transition={{ duration: 0.4 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-title text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               harmonyclass가 제공하는 것
             </h2>
             <p className="text-gray-600 text-lg">

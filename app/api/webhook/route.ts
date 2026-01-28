@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getStripeServer } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
+import { addSubscriber, removeFromGroup, STIBEE_GROUPS } from '@/lib/stibee';
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -56,6 +57,29 @@ export async function POST(req: NextRequest) {
         console.error('DB 업데이트 오류:', error);
       } else {
         console.log('✨ 프리미엄 전환 완료!');
+        
+        // 🔗 Stibee 프리미엄 그룹에 자동 추가
+        if (email && process.env.STIBEE_API_KEY) {
+          try {
+            const groupIds = STIBEE_GROUPS.PREMIUM ? [STIBEE_GROUPS.PREMIUM] : [];
+            await addSubscriber(email, undefined, groupIds);
+            
+            // DB에도 뉴스레터 구독 상태 업데이트
+            await supabase
+              .from('profiles')
+              .update({
+                newsletter_subscribed: true,
+                newsletter_tier: 'premium',
+                stibee_synced_at: new Date().toISOString(),
+              })
+              .eq('id', userId);
+              
+            console.log('📧 Stibee 프리미엄 그룹 등록 완료:', email);
+          } catch (stibeeError) {
+            console.error('Stibee 연동 오류:', stibeeError);
+            // Stibee 오류는 결제 성공에 영향 주지 않음
+          }
+        }
       }
     } else {
       console.warn('checkout.session.completed: metadata.userId 없음', { email });
@@ -80,6 +104,40 @@ export async function POST(req: NextRequest) {
       console.error('구독 취소 처리 오류:', error);
     } else {
       console.log('🔴 구독 취소됨');
+      
+      // 🔗 Stibee 프리미엄 → 무료 그룹으로 다운그레이드
+      if (process.env.STIBEE_API_KEY) {
+        try {
+          // 해당 고객의 이메일 찾기
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('email')
+            .eq('stripe_customer_id', customerId)
+            .single();
+          
+          if (profile?.email) {
+            // 무료 그룹으로 변경 (프리미엄에서 제거)
+            if (STIBEE_GROUPS.PREMIUM) {
+              await removeFromGroup(STIBEE_GROUPS.PREMIUM, [profile.email]);
+            }
+            const groupIds = STIBEE_GROUPS.FREE ? [STIBEE_GROUPS.FREE] : [];
+            await addSubscriber(profile.email, undefined, groupIds);
+            
+            // DB 업데이트
+            await supabase
+              .from('profiles')
+              .update({
+                newsletter_tier: 'free',
+                stibee_synced_at: new Date().toISOString(),
+              })
+              .eq('stripe_customer_id', customerId);
+              
+            console.log('📧 Stibee 무료 그룹으로 다운그레이드:', profile.email);
+          }
+        } catch (stibeeError) {
+          console.error('Stibee 다운그레이드 오류:', stibeeError);
+        }
+      }
     }
   }
 

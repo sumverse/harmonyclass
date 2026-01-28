@@ -22,7 +22,13 @@ const config: Config = {
     },
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['BodyFont', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        title: ['TitleFont', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        body: ['BodyFont', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };

@@ -4,10 +4,10 @@ export default function PricingSection() {
   return (
     <section className="py-20 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+        <h2 className="font-title text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
           자신에게 맞는 요금제를 선택하세요
         </h2>
-        <p className="text-gray-600 text-center mb-12 text-lg">
+        <p className="font-title text-gray-600 text-center mb-12 text-lg">
           7일 무료 체험 후 자동 결제
         </p>
 

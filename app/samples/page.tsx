@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SamplesPage() {
   const [schoolLevel, setSchoolLevel] = useState('middle');
@@ -221,8 +222,8 @@ export default function SamplesPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            harmonyclass
+          <Link href="/" className="block">
+            <Image src="/2.png" alt="harmonyclass" width={260} height={88} className="h-24 w-auto object-contain" />
           </Link>
           <Link href="/" className="text-gray-600 hover:text-gray-900">
             ← 홈으로
@@ -232,8 +233,8 @@ export default function SamplesPage() {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Contents</h1>
-        <p className="text-gray-600 mb-8">harmonyclass가 제공하는 모든 수업자료</p>
+        <h1 className="font-title text-4xl font-bold text-gray-900 mb-4">Contents</h1>
+        <p className="font-title text-gray-600 mb-8">harmonyclass가 제공하는 모든 수업자료</p>
 
         {/* Filters */}
         <div className="bg-white p-6 rounded-xl shadow-sm mb-8">

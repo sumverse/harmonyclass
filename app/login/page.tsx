@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -82,8 +83,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-bold text-gray-900 mb-2 block">
-            harmonyclass
+          <Link href="/" className="mb-2 block w-fit mx-auto">
+            <Image src="/2.png" alt="harmonyclass" width={280} height={104} className="h-24 w-auto object-contain mx-auto" />
           </Link>
           <p className="text-gray-600">로그인하여 시작하세요</p>
         </div>

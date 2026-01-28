@@ -11,7 +11,7 @@ export const getStripe = () => {
   return loadStripe(key);
 };
 
-// 서버용 (API)
+// 서버용 (API) — stripe 패키지 타입에 맞는 버전 사용
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-12-15.clover',
 });
